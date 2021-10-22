@@ -11,13 +11,14 @@ import {
   HttpEvent,
 } from '@angular/common/http';
 import { UserService } from '../services/user.service';
+import { NotificationService } from '../services/notification.service';
 
 @Injectable()
 export class HttpGlobalInterceptor implements HttpInterceptor {
   isRefreshingToken = false;
   tokenSubject: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
-  constructor(public auth: AuthService, private userService: UserService) {}
+  constructor(public auth: AuthService, private userService: UserService, private notification:NotificationService) {}
 
   addToken(req: HttpRequest<any>, token: string): HttpRequest<any> {
     return req.clone({
@@ -58,11 +59,10 @@ export class HttpGlobalInterceptor implements HttpInterceptor {
   handle400Error(error: any) {
     if (
       error &&
-      error.status === 400 &&
-      error.error &&
-      error.error.error === 'invalid_grant'
+      error.status === 0 
     ) {
       // If we get a 400 and the error message is 'invalid_grant', the token is no longer valid so logout.
+      this.notification.showError('Server did not understand the URL you gave it.','')
       this.userService.logoutUser();
     }
 
@@ -84,7 +84,6 @@ export class HttpGlobalInterceptor implements HttpInterceptor {
             this.auth.saveToken(response);
             return next.handle(this.addToken(req, response.access_token));
           }
-
           // If we don't get a new token, we are in trouble so logout.
           // this.spinner.hide();
           return this.userService.logoutUser();

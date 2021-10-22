@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AccountI } from 'src/app/models/account.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { HttpService } from 'src/app/services/http.service';
+import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
   selector: 'app-products',
@@ -12,7 +13,8 @@ export class ProductsComponent implements OnInit {
   accounts: AccountI[] = [];
   constructor(
     private httpService: HttpService,
-    private authService: AuthService
+    private authService: AuthService,
+    private notification: NotificationService,
   ) {}
 
   ngOnInit() {
@@ -25,7 +27,7 @@ export class ProductsComponent implements OnInit {
         this.accounts = res;
       },
       (error) => {
-        console.log(error);
+        this.notification.showError(`${error}`,'')
       }
     );
   }

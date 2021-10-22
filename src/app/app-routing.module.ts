@@ -10,6 +10,7 @@ const routes: Routes = [
   // path:'/auth' AuthRouting
   // path:'/pages' AuthRouting
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
+  { path: '*', redirectTo: '/auth/login', pathMatch: 'full' },
 
 ];
 

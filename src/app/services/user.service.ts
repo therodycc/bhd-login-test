@@ -21,14 +21,20 @@ export class UserService {
   login(user: any) {
     this.httpService.post('/sign_in', user).subscribe(
       (res) => {
+        
         // save token
         this.authService.saveToken(res);
+        // navigate to products
+        this.notification.showSuccess('Access', '');
         this.router.navigate(['/products']);
-        console.log({ res, userInfo: this.getUser() });
+
       },
       (err) => {
-        console.log(err)
-         this.notification.showWarning('',`${ err.error.message}`);
+        this.notification.showWarning(
+          '',
+          `${
+            err.error.message || err}`
+        );
       }
     );
   }

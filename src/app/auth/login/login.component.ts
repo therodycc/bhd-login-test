@@ -12,13 +12,11 @@ import { UserService } from 'src/app/services/user.service';
 export class LoginComponent implements OnInit {
   user: string;
   password: string;
-  disabled: boolean;
   userDb: any;
 
   constructor(private userService: UserService) {
     this.user = '';
     this.password = '';
-    this.disabled = false;
   }
 
   ngOnInit() {}
@@ -29,5 +27,9 @@ export class LoginComponent implements OnInit {
       password: this.password,
     };
     this.userService.login(USER);
+  }
+
+  get disabled() {
+    return this.user === '' || this.password === '' ? true : false;
   }
 }
