@@ -17,6 +17,8 @@ import { HeaderComponent } from '../components/layout/header/header.component';
   exports:[
     ProductsComponent,
     HeaderComponent
+  ],
+  providers:[
   ]
 })
 export class PagesModule { }

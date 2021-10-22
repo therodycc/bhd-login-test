@@ -20,16 +20,13 @@ export class AuthService {
   }
 
   getToken() {
-    return JSON.parse(localStorage.getItem('jwt') ?? '');
+    return JSON.parse(localStorage.getItem('jwt') ?? `{}`);
   }
 
-  refreshToken() {
-    return from(
-      this.httpService.post('', {
-        jwt: this.getToken().access_token,
-        refreshToken: this.getToken().refresh_token,
-      })
-    );
+  refreshToken(): Observable<any> {
+    return this.httpService.post('', {
+      jwt: this.getToken().access_token,
+      refreshToken: this.getToken().refresh_token,
+    });
   }
-
 }

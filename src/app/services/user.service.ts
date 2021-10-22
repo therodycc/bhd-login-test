@@ -3,6 +3,9 @@ import { AuthService } from './auth.service';
 import { HttpService } from './http.service';
 import decode from 'jwt-decode';
 import { Router } from '@angular/router';
+import { NotificationService } from './notification.service';
+import { Observable } from 'rxjs';
+import { HttpEvent } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -12,6 +15,7 @@ export class UserService {
     private httpService: HttpService,
     private authService: AuthService,
     private router: Router,
+    private notification: NotificationService
   ) {}
 
   login(user: any) {
@@ -19,11 +23,12 @@ export class UserService {
       (res) => {
         // save token
         this.authService.saveToken(res);
-        this.router.navigate(['/products'])
+        this.router.navigate(['/products']);
         console.log({ res, userInfo: this.getUser() });
       },
       (err) => {
-        console.log(err.error.message);
+        console.log(err)
+         this.notification.showWarning('',`${ err.error.message}`);
       }
     );
   }
@@ -35,6 +40,7 @@ export class UserService {
 
   logoutUser() {
     localStorage.removeItem('jwt');
-    this.router.navigate(['/auth/login'])
+    this.router.navigate(['/auth/login']);
+    return new Observable<HttpEvent<any>>();
   }
 }

@@ -1,5 +1,5 @@
-/* import { AuthService } from '../services/auth.service';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { AuthService } from '../services/auth.service';
+import { BehaviorSubject, Observable, ObservableInput } from 'rxjs';
 import { catchError, filter, switchMap, take, finalize } from 'rxjs/operators';
 import { throwError as observableThrowError } from 'rxjs';
 import { Injectable } from '@angular/core';
@@ -10,13 +10,14 @@ import {
   HttpRequest,
   HttpEvent,
 } from '@angular/common/http';
+import { UserService } from '../services/user.service';
 
 @Injectable()
 export class HttpGlobalInterceptor implements HttpInterceptor {
   isRefreshingToken = false;
   tokenSubject: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
-  constructor(public auth: AuthService) {}
+  constructor(public auth: AuthService, private userService: UserService) {}
 
   addToken(req: HttpRequest<any>, token: string): HttpRequest<any> {
     return req.clone({
@@ -29,8 +30,9 @@ export class HttpGlobalInterceptor implements HttpInterceptor {
       .handle(this.addToken(req, `${this.auth.getToken()?.access_token}`))
       .pipe(
         catchError((error) => {
-          if (req.url.includes('auth/refresh-token')) {
-            // this.auth.logOut();
+          // verificar que va aqui
+          if (req.url.includes('auth/login')) {
+            this.userService.logoutUser();
             return Observable.throw(error);
           }
 
@@ -61,7 +63,7 @@ export class HttpGlobalInterceptor implements HttpInterceptor {
       error.error.error === 'invalid_grant'
     ) {
       // If we get a 400 and the error message is 'invalid_grant', the token is no longer valid so logout.
-      // return this.logoutUser();
+      this.userService.logoutUser();
     }
 
     return observableThrowError(error);
@@ -76,16 +78,16 @@ export class HttpGlobalInterceptor implements HttpInterceptor {
       this.tokenSubject.next('');
 
       return this.auth.refreshToken().pipe(
-        switchMap((response) => {
+        switchMap((response: any) => {
           if (response) {
-            this.tokenSubject.next(response.jwt);
+            this.tokenSubject.next(response.access_token);
             this.auth.saveToken(response);
-            return next.handle(this.addToken(req, response.jwt));
+            return next.handle(this.addToken(req, response.access_token));
           }
 
           // If we don't get a new token, we are in trouble so logout.
           // this.spinner.hide();
-          // return this.logoutUser();
+          return this.userService.logoutUser();
         }),
         catchError((_) => {
           // If there is an exception calling 'refreshToken', bad news so logout.
@@ -108,8 +110,7 @@ export class HttpGlobalInterceptor implements HttpInterceptor {
   }
 
   logoutUser(): Observable<HttpEvent<any>> {
-    this.auth.logoutUser();
+    this.userService.logoutUser();
     return new Observable<HttpEvent<any>>();
   }
 }
- */

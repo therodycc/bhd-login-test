@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { UserI } from 'src/app/models/user.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { HttpService } from 'src/app/services/http.service';
 import { UserService } from 'src/app/services/user.service';
@@ -21,13 +22,12 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {}
-  
+
   async loginUser() {
-    const USER = {
+    const USER: UserI = {
       userId: this.user,
       password: this.password,
     };
-
     this.userService.login(USER);
   }
 }

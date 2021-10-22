@@ -8,12 +8,19 @@ import {
 } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthService } from '../services/auth.service';
+import { NotificationService } from '../services/notification.service';
+import { UserService } from '../services/user.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private notification: NotificationService,
+    private userService: UserService
+  ) {}
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
@@ -26,6 +33,7 @@ export class AuthGuard implements CanActivate {
       this.router.navigate(['/auth/login']);
       return false;
     }
+    this.notification.showSuccess('Access', '');
     return true;
   }
 }
