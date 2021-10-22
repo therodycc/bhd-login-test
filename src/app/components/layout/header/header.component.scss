@@ -1,0 +1,26 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Montserrat", sans-serif;
+}
+
+
+header {
+  background-color: #33325c;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+
+  h1 {
+    font-size: 14px;
+    color: white;
+    font-weight: 400;
+  }
+
+  button {
+    font-size: 12px;
+    padding: 5px 10px;
+  }
+}
