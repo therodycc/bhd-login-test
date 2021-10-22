@@ -27,6 +27,7 @@ export class AuthService {
         this.tokenService.saveToken(res);
         // navigate to products
         this.notification.showSuccess('Access', '');
+
         this.router.navigate(['/products']);
       },
       (err) => {

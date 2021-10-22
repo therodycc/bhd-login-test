@@ -34,7 +34,9 @@ export class HttpGlobalInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): any {
     return next
-      .handle(this.addToken(req, `${this.tokenService.getToken()?.access_token}`))
+      .handle(
+        this.addToken(req, `${this.tokenService.getToken()?.access_token}`)
+      )
       .pipe(
         catchError((error) => {
           // verificar que va aqui

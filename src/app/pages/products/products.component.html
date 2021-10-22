@@ -3,22 +3,21 @@
   <h3>Products</h3>
   <div class="back-logs-item-head">
     <div class="item-head">
-      <i class="fas fa-plus" style="width: 10%;"></i>
-      <p style="width: 30%;">alias</p>
-      <p style="width: 20%;">number</p>
-      <p style="width: 20%;">availableAmount</p>
-      <p style="width: 20%;">productType</p>
+      <i class="fas fa-plus" style="width: 10%"></i>
+      <p style="width: 30%">alias</p>
+      <p style="width: 20%">number</p>
+      <p style="width: 20%">availableAmount</p>
+      <p style="width: 20%">productType</p>
     </div>
   </div>
 
-
   <div class="back-logs-item">
     <div class="item" *ngFor="let item of accounts">
-      <i class="fas fa-plus" style="width: 10%;"></i>
-      <p style="width: 30%;">{{item.alias}}</p>
-      <p style="width: 20%;">{{item.number}}</p>
-      <p style="width: 20%;">{{item.availableAmount}}</p>
-      <p style="width: 20%;">{{item.productType}}</p>
+      <i class="fas fa-plus" style="width: 10%"></i>
+      <p style="width: 30%">{{ item.alias }}</p>
+      <p style="width: 20%">{{ item.number }}</p>
+      <p style="width: 20%">{{ item.availableAmount }}</p>
+      <p style="width: 20%">{{ item.productType }}</p>
     </div>
   </div>
 </div>

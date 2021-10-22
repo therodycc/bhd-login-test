@@ -20,7 +20,6 @@ export class UserService {
     private notification: NotificationService
   ) {}
 
-
   getUser() {
     const token: any = JSON.parse(localStorage.getItem('jwt') ?? '');
     if (!token?.access_token) return null;
