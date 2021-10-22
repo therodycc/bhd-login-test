@@ -9,18 +9,14 @@ import {
 import { Observable } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { NotificationService } from '../services/notification.service';
+import { TokenService } from '../services/token.service';
 import { UserService } from '../services/user.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
-  constructor(
-    private authService: AuthService,
-    private router: Router,
-    private notification: NotificationService,
-    private userService: UserService
-  ) {}
+  constructor(private router: Router, private tokenService: TokenService) {}
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
@@ -29,7 +25,7 @@ export class AuthGuard implements CanActivate {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    if (this.authService.getToken().access_token === '') {
+    if (this.tokenService.getToken().access_token === '') {
       this.router.navigate(['/auth/login']);
       return false;
     }

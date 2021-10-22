@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { NotificationService } from './notification.service';
 import { Observable } from 'rxjs';
 import { HttpEvent } from '@angular/common/http';
+import { TokenService } from './token.service';
 
 @Injectable({
   providedIn: 'root',
@@ -14,30 +15,12 @@ export class UserService {
   constructor(
     private httpService: HttpService,
     private authService: AuthService,
+    private tokenService: TokenService,
     private router: Router,
     private notification: NotificationService
   ) {}
 
-  login(user: any) {
-    this.httpService.post('/sign_in', user).subscribe(
-      (res) => {
-        
-        // save token
-        this.authService.saveToken(res);
-        // navigate to products
-        this.notification.showSuccess('Access', '');
-        this.router.navigate(['/products']);
 
-      },
-      (err) => {
-        this.notification.showWarning(
-          '',
-          `${
-            err.error.message || err}`
-        );
-      }
-    );
-  }
   getUser() {
     const token: any = JSON.parse(localStorage.getItem('jwt') ?? '');
     if (!token?.access_token) return null;

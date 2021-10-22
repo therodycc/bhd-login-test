@@ -14,7 +14,7 @@ export class LoginComponent implements OnInit {
   password: string;
   userDb: any;
 
-  constructor(private userService: UserService) {
+  constructor(private authService: AuthService) {
     this.user = '';
     this.password = '';
   }
@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
       userId: this.user,
       password: this.password,
     };
-    this.userService.login(USER);
+    this.authService.login(USER);
   }
 
   get disabled() {

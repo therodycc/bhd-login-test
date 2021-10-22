@@ -5,28 +5,33 @@ import { tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import decode from 'jwt-decode';
 import { HttpService } from './http.service';
+import { TokenService } from './token.service';
+import { Router } from '@angular/router';
+import { NotificationService } from './notification.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   constructor(
-    private httpClient: HttpClient,
-    private httpService: HttpService
+    private httpService: HttpService,
+    private tokenService: TokenService,
+    private router: Router,
+    private notification: NotificationService
   ) {}
 
-  saveToken(jwt: any) {
-    localStorage.setItem('jwt', JSON.stringify(jwt));
-  }
-
-  getToken() {
-    return JSON.parse(localStorage.getItem('jwt') ?? `{}`);
-  }
-
-  refreshToken(): Observable<any> {
-    return this.httpService.post('', {
-      jwt: this.getToken().access_token,
-      refreshToken: this.getToken().refresh_token,
-    });
+  login(user: any) {
+    this.httpService.post('/sign_in', user).subscribe(
+      (res) => {
+        // save token
+        this.tokenService.saveToken(res);
+        // navigate to products
+        this.notification.showSuccess('Access', '');
+        this.router.navigate(['/products']);
+      },
+      (err) => {
+        this.notification.showWarning('', `${err.error.message || err}`);
+      }
+    );
   }
 }
