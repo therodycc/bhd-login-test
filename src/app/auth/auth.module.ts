@@ -4,9 +4,10 @@ import { LoginComponent } from './login/login.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthRoutingModule } from './auth-routing.module';
+import { AuthComponent } from './auth.component';
 
 @NgModule({
-  declarations: [LoginComponent],
+  declarations: [AuthComponent, LoginComponent, AuthComponent],
   imports: [CommonModule, FormsModule, AuthRoutingModule, HttpClientModule],
   exports: [LoginComponent],
 })
