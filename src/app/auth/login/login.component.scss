@@ -33,8 +33,6 @@
 
   h2 {
     font-size: 12px;
-    margin-bottom: 20px;
-
   }
 
   input {
@@ -42,7 +40,7 @@
     outline: none;
     border: none;
     border-bottom: 1px solid rgb(219, 218, 218);
-    margin-bottom: 15px;
+    margin-top: 15px;
     padding: 5px;
     border-radius: 5px;
     font-size: 12px;
@@ -67,6 +65,7 @@
     color: #9b9bf5;
     cursor: pointer;
     font-size: 12px;
+    margin-top: 15px;
   }
 
 
@@ -77,4 +76,16 @@
 .disabled {
   background-color: #1818797a!important;
   color: white!important;
+}
+
+
+.invalid{
+  border-bottom: 2px solid red!important;
+}
+
+.invalidSpan{
+  color: red;
+  font-weight: bold;
+  font-size: 10px;
+  margin-top: 0;
 }

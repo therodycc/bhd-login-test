@@ -1,8 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { UserI } from 'src/app/interfaces/user.interface';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
+// services
 import { AuthService } from 'src/app/services/auth.service';
-import { HttpService } from 'src/app/services/http.service';
-import { UserService } from 'src/app/services/user.service';
+// interfaces
+import { UserI } from 'src/app/interfaces/user.interface';
 
 @Component({
   selector: 'app-login',
@@ -10,26 +15,46 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
-  user: string;
-  password: string;
   userDb: any;
 
-  constructor(private authService: AuthService) {
-    this.user = '';
-    this.password = '';
+  public user: FormGroup;
+
+  constructor(private authService: AuthService, private _fb: FormBuilder) {
+    this.user = this._fb.group({
+      userId: [''],
+      password: [''],
+    });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.createForm();
+  }
 
-  async loginUser() {
-    const USER: UserI = {
-      userId: this.user,
-      password: this.password,
-    };
+  createForm() {
+    this.user = this._fb.group({
+      userId: [
+        this.user.value.userId,
+        [Validators.required, Validators.minLength(6)],
+      ],
+      password: [this.user.value.password, [Validators.required]],
+    });
+  }
+
+  loginUser() {
+    const USER: UserI = this.user.value;
     this.authService.login(USER);
   }
 
-  get disabled() {
-    return this.user === '' || this.password === '' ? true : false;
+  get invalidEmail() {
+    return (
+      this.user.controls.userId.touched &&
+      this.user.controls.userId.status == 'INVALID'
+    );
+  }
+  get invalidPassword() {
+    return (
+      this.user.controls.password.touched &&
+      this.user.controls.password.status == 'INVALID'
+    );
   }
 }

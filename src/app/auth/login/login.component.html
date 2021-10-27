@@ -1,21 +1,33 @@
 <div class="content">
-  <form action="" class="login" (ngSubmit)="loginUser()">
+  <form action="" class="login" [formGroup]="user" (ngSubmit)="loginUser()">
     <h2>Login</h2>
     <input
       type="text"
+      [class.invalid]="invalidEmail"
       placeholder="User"
-      [(ngModel)]="user"
-      name="user"
+      formControlName="userId"
+      name="userId"
       autocomplete="off"
     />
+    <span [class.invalidSpan]="invalidEmail" *ngIf="invalidEmail"
+      >Invalid user Id</span
+    >
     <input
       type="password"
+      [class.invalid]="invalidPassword"
       placeholder="Password"
-      [(ngModel)]="password"
+      formControlName="password"
       name="password"
       autocomplete="off"
     />
-    <button type="submit" [class.disabled]="disabled" [disabled]="disabled">
+    <span [class.invalidSpan]="invalidPassword" *ngIf="invalidPassword"
+      >Required</span
+    >
+    <button
+      type="submit"
+      [class.disabled]="user.invalid"
+      [disabled]="user.invalid"
+    >
       Login
     </button>
   </form>
