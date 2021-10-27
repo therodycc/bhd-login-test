@@ -1,9 +1,4 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { from, Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
-import { environment } from 'src/environments/environment';
-import decode from 'jwt-decode';
 import { HttpService } from './http.service';
 import { TokenService } from './token.service';
 import { Router } from '@angular/router';
@@ -25,10 +20,9 @@ export class AuthService {
       (res) => {
         // save token
         this.tokenService.saveToken(res);
-        // navigate to products
-        this.notification.showSuccess('Access', '');
-
-        this.router.navigate(['/products']);
+      // navigate to products
+        this.notification.showSuccess('Access', 'Welcome');
+        this.router.navigate(['/private/accounts']);
       },
       (err) => {
         this.notification.showWarning('', `${err.error.message || err}`);

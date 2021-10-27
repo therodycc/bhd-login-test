@@ -22,4 +22,8 @@ export class TokenService {
       refreshToken: this.getToken().refresh_token,
     });
   }
+
+  removeToken(){
+    localStorage.removeItem('jwt');
+  }
 }

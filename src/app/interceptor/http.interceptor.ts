@@ -28,7 +28,9 @@ export class HttpGlobalInterceptor implements HttpInterceptor {
 
   addToken(req: HttpRequest<any>, token: string): HttpRequest<any> {
     return req.clone({
-      setHeaders: { Authorization: 'Bearer ' + token },
+      setHeaders: {
+        Authorization: 'Bearer ' + token,
+      },
     });
   }
 
